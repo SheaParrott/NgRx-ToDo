@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { TODOS } from "../model/mock-data";
 import { ToDo } from "../model/toDo.model";
+import { ToDosFilter } from "../NgRx-Signals-Approach/components/to-do/store/toDos.store";
 
 @Injectable({
     providedIn: 'root'
@@ -26,9 +27,13 @@ export class ToDosService {
         await this.sleep(500)
     }
 
-    async updateToDo(id: string, completed: boolean) {
+    async updateToDo(id: string, completed: boolean): Promise<void> {
         await this.sleep(250)
     }
+
+    // updateFilter(filter: ToDosFilter) {
+    //     p
+    // }
 
     async sleep(ms: number): Promise<any> {
         return new Promise(resolve => {

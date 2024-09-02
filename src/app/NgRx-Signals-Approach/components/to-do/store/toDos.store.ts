@@ -1,7 +1,7 @@
 import { ToDo } from "../../../../model/toDo.model";
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals'
+import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals'
 import { ToDosService } from "../../../../services/toDos.service";
-import { inject } from "@angular/core";
+import { computed, inject } from "@angular/core";
 
 
 export type ToDosFilter = "all" | "pending" | "completed"
@@ -46,8 +46,27 @@ export const ToDosStore = signalStore(
             await toDosService.updateToDo(id, completed)
 
             patchState(store, (state) => ({
-                toDos: state.toDos.map(toDo => toDo.id == id ? { ...toDo, completed: completed } : toDo)
+                toDos: state.toDos.map(toDo => toDo.id == id ? { ...toDo, completed } : toDo)
             }))
+        },
+        updateFilter(filter: ToDosFilter) {
+            patchState(store, { loading: true })
+            patchState(store, { filter })
+            setTimeout(() => patchState(store, { loading: false }), 250)
         }
+    })),
+    withComputed((state) => ({
+        filteredToDos: computed(() => {
+            const toDos = state.toDos()
+
+            switch(state.filter()) {
+                case 'all':
+                    return toDos
+                case 'pending':
+                    return toDos.filter(toDo => !toDo.completed)
+                case 'completed':
+                    return toDos.filter(toDo => toDo.completed)
+            }
+        })
     }))
 )

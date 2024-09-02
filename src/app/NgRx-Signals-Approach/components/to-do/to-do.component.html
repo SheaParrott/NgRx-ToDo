@@ -6,7 +6,7 @@
     <mat-icon matSuffix fontIcon="edit"></mat-icon>
 </mat-form-field>
 
-<mat-button-toggle-group #filter>
+<mat-button-toggle-group #filter hideSingleSelectionIndicator="true" (change)="onFilterToDos($event)">
     <mat-button-toggle value="all">All</mat-button-toggle>
     <mat-button-toggle value="pending">Pending</mat-button-toggle>
     <mat-button-toggle value="completed">Completed</mat-button-toggle>
@@ -15,7 +15,7 @@
 <mat-selection-list class="todos-list">
 
     @if (!store.loading()) {
-        @for(todo of store.toDos(); track todo.id; let index = $index) {
+        @for(todo of store.filteredToDos(); track todo.id; let index = $index) {
             <mat-list-option [selected]="todo.completed" (click)="OnToDoToggled(todo.id, todo.completed)">
                 <div class="todo-item">
                     <mat-icon fontIcon="delete" class="delete-todo" (click)="onDeleteToDo(todo.id, $event)"></mat-icon>

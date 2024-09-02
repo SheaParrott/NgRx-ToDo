@@ -1,9 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { ToDosStore } from './store/toDos.store';
+import { Component, effect, inject, OnInit, viewChild } from '@angular/core';
+import { ToDosFilter, ToDosStore } from './store/toDos.store';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon'
 import { MatInput, MatSuffix } from '@angular/material/input'
-import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle'
+import { MatButtonToggleGroup, MatButtonToggle, MatButtonToggleChange } from '@angular/material/button-toggle'
 import { MatListOption, MatSelectionList } from "@angular/material/list"
 import { MatProgressSpinner } from '@angular/material/progress-spinner'
 import { NgStyle } from '@angular/common';
@@ -18,6 +18,15 @@ import { NgStyle } from '@angular/common';
 })
 export class ToDoComponent implements OnInit{
   store = inject(ToDosStore)
+  filter = viewChild.required(MatButtonToggleGroup)
+
+  constructor() {
+    effect(() => {
+      const filter = this.filter();
+
+      filter.value = this.store.filter()
+    })
+  }
 
   ngOnInit(): void {
     this.loadToDos().then(() => {
@@ -40,5 +49,11 @@ export class ToDoComponent implements OnInit{
 
   async OnToDoToggled(id: string, completed: boolean): Promise<void> {
     await this.store.updateToDo(id, !completed)
+  }
+
+  onFilterToDos(event: MatButtonToggleChange) {
+    const filter: ToDosFilter = event.value
+
+    this.store.updateFilter(filter)
   }
 }
