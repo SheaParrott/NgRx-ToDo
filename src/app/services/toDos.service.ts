@@ -13,6 +13,23 @@ export class ToDosService {
         return TODOS
     }
 
+    async addToDo(toDo: Partial<ToDo>): Promise<ToDo> {
+        await this.sleep(1000)
+
+        return {
+            id: Math.random().toString().substring(2, 9),
+            ...toDo,
+        } as ToDo
+    }
+
+    async deleteToDo(id: string): Promise<void> {
+        await this.sleep(500)
+    }
+
+    async updateToDo(id: string, completed: boolean) {
+        await this.sleep(250)
+    }
+
     async sleep(ms: number): Promise<any> {
         return new Promise(resolve => {
             setTimeout(resolve, ms);
