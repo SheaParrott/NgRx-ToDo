@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, viewChild, ViewChild } from '@angular/core';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon'
 import { MatInput, MatSuffix } from '@angular/material/input'
@@ -9,7 +9,7 @@ import { CommonModule, NgStyle } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { AppState, selectFilter, selectFilteredToDos, selectLoading } from './store/toDos.selectors';
 import { addToDo, deleteToDo, filterToDos, loadToDos, toggleToDoCompleted } from './store/toDos.action';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { ToDo, ToDosFilter } from '../model/toDo.model';
 
 @Component({
@@ -20,15 +20,33 @@ import { ToDo, ToDosFilter } from '../model/toDo.model';
   styleUrl: './to-do.component.scss',
   providers: []
 })
-export class ToDoComponentTwo implements OnInit{
+export class ToDoComponentTwo implements OnInit, OnDestroy {
   toDos$: Observable<ToDo[]> = this.store.select(selectFilteredToDos)
   filter$: Observable<ToDosFilter> = this.store.select(selectFilter)
   loading$: Observable<boolean> = this.store.select(selectLoading)
+  private destroy$ = new Subject<void>();
+
+  filter = viewChild.required(MatButtonToggleGroup)
 
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
     this.store.dispatch(loadToDos())
+
+    this.filter$
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(value => {
+      if (this.filter) {
+        const filter = this.filter();
+
+        filter.value = value
+      }
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   OnAddToDo(title: string): void {
