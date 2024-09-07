@@ -31,10 +31,6 @@ export class ToDosService {
         await this.sleep(250)
     }
 
-    // updateFilter(filter: ToDosFilter) {
-    //     p
-    // }
-
     async sleep(ms: number): Promise<any> {
         return new Promise(resolve => {
             setTimeout(resolve, ms);

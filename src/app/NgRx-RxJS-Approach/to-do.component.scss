@@ -1,0 +1,27 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.todo-input {
+    width: 410px;
+}
+
+.todo-list {
+    width: 100%;
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+}
+
+.delete-todo {
+    margin-right: 18px;
+    cursor: pointer;
+}
+
+.delete-todo:hover {
+    opacity: .6;
+}
