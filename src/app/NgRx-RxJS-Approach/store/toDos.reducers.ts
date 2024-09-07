@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { ToDo, ToDosFilter } from "../../model/toDo.model";
-import { addToDo, addToDoFailure, addToDoSuccess, deleteToDoFailure, deleteToDoSuccess, loadToDos, loadToDosFailure, loadToDosSuccess } from "./toDos.action";
+import { addToDo, addToDoFailure, addToDoSuccess, deleteToDoFailure, deleteToDoSuccess, filterToDos, loadToDos, loadToDosFailure, loadToDosSuccess, toggleToDoCompletedPropertyFailure, toggleToDoCompletedPropertySuccess } from "./toDos.action";
 
 export type ToDosState = {
     toDos: ToDo[];
@@ -24,7 +24,7 @@ export const toDoReducer = createReducer(
     on(loadToDosSuccess, (state, { toDos }) => ({
         ...state,
         toDos: toDos,
-        filteredToDos: filterToDos(state.filter, toDos),
+        filteredToDos: _filterToDos(state.filter, toDos),
         error: "",
         loading: false
     })),
@@ -39,7 +39,7 @@ export const toDoReducer = createReducer(
         return {
             ...state,
             toDos,
-            filteredToDos: filterToDos(state.filter, toDos)
+            filteredToDos: _filterToDos(state.filter, toDos)
         }
     }),
     on(addToDoFailure, (state, { error }) => ({
@@ -52,16 +52,34 @@ export const toDoReducer = createReducer(
         return {
             ...state,
             toDos,
-            filteredToDos: filterToDos(state.filter, toDos)
+            filteredToDos: _filterToDos(state.filter, toDos)
         }
     }),
     on(deleteToDoFailure, (state, { error }) => ({
         ...state,
         error
+    })),
+    on(toggleToDoCompletedPropertySuccess, (state, { id, completed }) => {
+        const toDos = state.toDos.map(toDo => toDo.id == id ? { ...toDo, completed } : toDo)
+
+        return {
+            ...state,
+            toDos,
+            filteredToDos: _filterToDos(state.filter, toDos)
+        }
+    }),
+    on(toggleToDoCompletedPropertyFailure, (state, { error }) => ({
+        ...state,
+        error
+    })),
+    on(filterToDos, (state, { filter }) => ({
+        ...state,
+        filter,
+        filteredToDos: _filterToDos(filter, state.toDos)
     }))
 )
 
-export const filterToDos = (filter: ToDosFilter, toDos: ToDo[]) => {
+const _filterToDos = (filter: ToDosFilter, toDos: ToDo[]) => {
     switch(filter) {
         case 'all':
             return toDos

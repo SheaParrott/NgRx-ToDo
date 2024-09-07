@@ -26,8 +26,9 @@ export class ToDosService {
         return id
     }
 
-    async updateToDo(id: string, completed: boolean): Promise<void> {
+    async updateToDo(id: string, completed: boolean): Promise<{id: string, completed: boolean}> {
         await this.sleep(250)
+        return { id, completed }
     }
 
     async sleep(ms: number): Promise<any> {

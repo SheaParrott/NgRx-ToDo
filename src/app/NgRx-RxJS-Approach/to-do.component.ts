@@ -8,7 +8,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner'
 import { CommonModule, NgStyle } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { AppState, selectFilter, selectFilteredToDos, selectLoading } from './store/toDos.selectors';
-import { addToDo, deleteToDo, filterToDos, loadToDos, toggleToDoCompleted } from './store/toDos.action';
+import { addToDo, deleteToDo, filterToDos, loadToDos, toggleToDoCompletedProperty } from './store/toDos.action';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { ToDo, ToDosFilter } from '../model/toDo.model';
 
@@ -25,6 +25,7 @@ export class ToDoComponentTwo implements OnInit, OnDestroy {
   filter$: Observable<ToDosFilter> = this.store.select(selectFilter)
   loading$: Observable<boolean> = this.store.select(selectLoading)
   private destroy$ = new Subject<void>();
+  flutterLoad: boolean = false
 
   filter = viewChild.required(MatButtonToggleGroup)
 
@@ -59,12 +60,17 @@ export class ToDoComponentTwo implements OnInit, OnDestroy {
   }
 
   OnToDoToggled(id: string, completed: boolean): void {
-    this.store.dispatch(toggleToDoCompleted({ id, completed }))
+    this.store.dispatch(toggleToDoCompletedProperty({ id, completed: !completed }))
   }
 
   onFilterToDos(event: MatButtonToggleChange) {
     const filter: ToDosFilter = event.value
 
     this.store.dispatch(filterToDos({filter}))
+
+    this.flutterLoad = true
+    setTimeout(() => {
+      this.flutterLoad = false
+    }, 250);
   }
 }

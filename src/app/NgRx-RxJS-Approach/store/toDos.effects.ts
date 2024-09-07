@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ToDosService } from "../../services/toDos.service";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { addToDo, addToDoFailure, addToDoSuccess, deleteToDo, deleteToDoFailure, deleteToDoSuccess, loadToDos, loadToDosFailure, loadToDosSuccess } from "./toDos.action";
+import { addToDo, addToDoFailure, addToDoSuccess, deleteToDo, deleteToDoFailure, deleteToDoSuccess, loadToDos, loadToDosFailure, loadToDosSuccess, toggleToDoCompletedProperty, toggleToDoCompletedPropertyFailure, toggleToDoCompletedPropertySuccess } from "./toDos.action";
 import { catchError, from, map, of, switchMap } from "rxjs";
 
 
@@ -41,6 +41,17 @@ export class toDoEffects {
                 from(this.toDosService.deleteToDo(id)).pipe(
                     map((toDo) => deleteToDoSuccess({ id })),
                     catchError((error) => of(deleteToDoFailure({ error })))
+                )
+            )
+        ))
+
+    toggleToDoCompletedProperty$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(toggleToDoCompletedProperty),
+            switchMap(({ id, completed }) =>
+                from(this.toDosService.updateToDo(id, completed)).pipe(
+                    map((toDo) => toggleToDoCompletedPropertySuccess({ id, completed })),
+                    catchError((error) => of(toggleToDoCompletedPropertyFailure({ error })))
                 )
             )
         ))

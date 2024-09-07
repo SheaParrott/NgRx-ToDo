@@ -43,9 +43,19 @@ export const deleteToDoFailure = createAction(
     props<{ error: string }>()
 )
 
-export const toggleToDoCompleted = createAction(
-    "[ToDo Page] Toggle ToDo completed",
+export const toggleToDoCompletedProperty = createAction(
+    "[ToDo Page] Toggle ToDo Completed Property",
     props<{ id: string, completed: boolean }>()
+)
+
+export const toggleToDoCompletedPropertySuccess = createAction(
+    "[ToDo Page] Toggle ToDo Completed Property Success",
+    props<{ id: string, completed: boolean }>()
+)
+
+export const toggleToDoCompletedPropertyFailure = createAction(
+    "[ToDo Page] Toggle ToDo Completed Property Failure",
+    props<{ error: string }>()
 )
 
 export const filterToDos = createAction(
