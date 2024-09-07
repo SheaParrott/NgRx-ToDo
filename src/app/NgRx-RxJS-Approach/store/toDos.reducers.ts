@@ -24,6 +24,7 @@ export const toDoReducer = createReducer(
     on(loadToDosSuccess, (state, { toDos }) => ({
         ...state,
         toDos: toDos,
+        filteredToDos: filterToDos(state.filter, toDos),
         error: "",
         loading: false
     })),
@@ -33,3 +34,14 @@ export const toDoReducer = createReducer(
         loading: false
     }))
 )
+
+export const filterToDos = (filter: ToDosFilter, toDos: ToDo[]) => {
+    switch(filter) {
+        case 'all':
+            return toDos
+        case 'pending':
+            return toDos.filter(toDo => !toDo.completed)
+        case 'completed':
+            return toDos.filter(toDo => toDo.completed)
+    }
+}
