@@ -1,3 +1,3 @@
-# Elegant To-Do Application Utilizing NgRx Signal Store
+# Elegant To-Do Application with Two State Management Approaches: NgRx SignalStore & NgRx with RxJS
 
-This repository features a streamlined To-Do application powered by the cutting-edge NgRx Signal Store. The file structure has been meticulously crafted with future expansion in mind, anticipating the eventual integration of NgRx with RxJS to achieve the same functionality. Stay tuned for upcoming enhancements!
+This repository showcases a streamlined To-Do application with two distinct state management implementations. One approach utilizes NgRx with RxJS, while the other leverages NgRx SignalStore, an extension of Angular Signals. The project aims to demonstrate different methods for managing state effectively in an Angular application.
