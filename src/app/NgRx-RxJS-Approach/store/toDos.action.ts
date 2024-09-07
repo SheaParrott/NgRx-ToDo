@@ -18,6 +18,16 @@ export const addToDo = createAction(
     props<{ title: string }>()
 )
 
+export const addToDoSuccess = createAction(
+    "[ToDo Page] Add ToDo Sucess",
+    props<{ toDo: ToDo }>()
+)
+
+export const addToDoFailure = createAction(
+    "[ToDo Page] Add ToDo Failure",
+    props<{ error: string }>()
+)
+
 export const deleteToDo = createAction(
     "[ToDo Page] Delete ToDo",
     props<{ id: string }>()
