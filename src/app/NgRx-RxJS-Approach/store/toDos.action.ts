@@ -33,6 +33,16 @@ export const deleteToDo = createAction(
     props<{ id: string }>()
 )
 
+export const deleteToDoSuccess = createAction(
+    "[ToDo Page] Delete ToDo Success",
+    props<{ id: string }>()
+)
+
+export const deleteToDoFailure = createAction(
+    "[ToDo Page] Delete ToDo Failure",
+    props<{ error: string }>()
+)
+
 export const toggleToDoCompleted = createAction(
     "[ToDo Page] Toggle ToDo completed",
     props<{ id: string, completed: boolean }>()

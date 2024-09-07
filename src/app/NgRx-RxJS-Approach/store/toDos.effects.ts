@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ToDosService } from "../../services/toDos.service";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { addToDo, addToDoFailure, addToDoSuccess, loadToDos, loadToDosFailure, loadToDosSuccess } from "./toDos.action";
+import { addToDo, addToDoFailure, addToDoSuccess, deleteToDo, deleteToDoFailure, deleteToDoSuccess, loadToDos, loadToDosFailure, loadToDosSuccess } from "./toDos.action";
 import { catchError, from, map, of, switchMap } from "rxjs";
 
 
@@ -30,6 +30,17 @@ export class toDoEffects {
                 from(this.toDosService.addToDo({ title })).pipe(
                     map((toDo) => addToDoSuccess({ toDo })),
                     catchError((error) => of(addToDoFailure({ error })))
+                )
+            )
+        ))
+
+    deleteToDo$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(deleteToDo),
+            switchMap(({ id }) =>
+                from(this.toDosService.deleteToDo(id)).pipe(
+                    map((toDo) => deleteToDoSuccess({ id })),
+                    catchError((error) => of(deleteToDoFailure({ error })))
                 )
             )
         ))

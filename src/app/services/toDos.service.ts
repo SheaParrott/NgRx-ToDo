@@ -15,15 +15,15 @@ export class ToDosService {
 
     async addToDo(toDo: Partial<ToDo>): Promise<ToDo> {
         await this.sleep(1000)
-
         return {
             id: Math.random().toString().substring(2, 9),
             ...toDo,
         } as ToDo
     }
 
-    async deleteToDo(id: string): Promise<void> {
+    async deleteToDo(id: string): Promise<string> {
         await this.sleep(500)
+        return id
     }
 
     async updateToDo(id: string, completed: boolean): Promise<void> {

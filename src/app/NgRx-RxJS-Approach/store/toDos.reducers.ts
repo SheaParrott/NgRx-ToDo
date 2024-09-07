@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { ToDo, ToDosFilter } from "../../model/toDo.model";
-import { addToDo, addToDoFailure, addToDoSuccess, loadToDos, loadToDosFailure, loadToDosSuccess } from "./toDos.action";
+import { addToDo, addToDoFailure, addToDoSuccess, deleteToDoFailure, deleteToDoSuccess, loadToDos, loadToDosFailure, loadToDosSuccess } from "./toDos.action";
 
 export type ToDosState = {
     toDos: ToDo[];
@@ -43,6 +43,19 @@ export const toDoReducer = createReducer(
         }
     }),
     on(addToDoFailure, (state, { error }) => ({
+        ...state,
+        error
+    })),
+    on(deleteToDoSuccess, (state, { id }) => {
+        const toDos = state.toDos.filter(toDo => toDo.id != id)
+
+        return {
+            ...state,
+            toDos,
+            filteredToDos: filterToDos(state.filter, toDos)
+        }
+    }),
+    on(deleteToDoFailure, (state, { error }) => ({
         ...state,
         error
     }))
