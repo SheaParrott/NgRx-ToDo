@@ -1,10 +1,8 @@
-import { ToDo } from "../../../../model/toDo.model";
+import { ToDo, ToDosFilter } from "../../../../model/toDo.model";
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals'
 import { ToDosService } from "../../../../services/toDos.service";
 import { computed, inject } from "@angular/core";
 
-
-export type ToDosFilter = "all" | "pending" | "completed"
 
 type ToDosState = {
     toDos: ToDo[];

@@ -1,5 +1,5 @@
 import { Component, effect, inject, OnInit, viewChild } from '@angular/core';
-import { ToDosFilter, ToDosStore } from './store/toDos.store';
+import { ToDosStore } from './store/toDos.store';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon'
 import { MatInput, MatSuffix } from '@angular/material/input'
@@ -7,6 +7,7 @@ import { MatButtonToggleGroup, MatButtonToggle, MatButtonToggleChange } from '@a
 import { MatListOption, MatSelectionList } from "@angular/material/list"
 import { MatProgressSpinner } from '@angular/material/progress-spinner'
 import { NgStyle } from '@angular/common';
+import { ToDosFilter } from '../../../model/toDo.model';
 
 @Component({
   selector: 'app-to-do',

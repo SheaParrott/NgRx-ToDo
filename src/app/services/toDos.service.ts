@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { TODOS } from "../model/mock-data";
 import { ToDo } from "../model/toDo.model";
-import { ToDosFilter } from "../NgRx-Signals-Approach/components/to-do/store/toDos.store";
 
 @Injectable({
     providedIn: 'root'

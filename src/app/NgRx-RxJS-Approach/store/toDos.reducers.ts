@@ -1,13 +1,12 @@
 import { createReducer, on } from "@ngrx/store";
-import { ToDo } from "../../model/toDo.model";
-import { ToDosFilter } from "../../NgRx-Signals-Approach/components/to-do/store/toDos.store";
+import { ToDo, ToDosFilter } from "../../model/toDo.model";
 import { loadToDos, loadToDosFailure, loadToDosSuccess } from "./toDos.action";
-
 
 export type ToDosState = {
     toDos: ToDo[];
     loading: boolean;
     filter: ToDosFilter;
+    filteredToDos: ToDo[];
     error: string;
 }
 
@@ -15,6 +14,7 @@ const initialState: ToDosState = {
     toDos: [],
     loading: false,
     filter: "all",
+    filteredToDos: [],
     error: ""
 }
 

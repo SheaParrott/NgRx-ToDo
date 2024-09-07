@@ -3,3 +3,5 @@ export type ToDo = {
     title: string;
     completed: boolean;
 }
+
+export type ToDosFilter = "all" | "pending" | "completed"

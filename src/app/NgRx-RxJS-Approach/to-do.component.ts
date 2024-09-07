@@ -1,5 +1,4 @@
-import { Component, effect, inject, OnInit, viewChild } from '@angular/core';
-// import { ToDosFilter, ToDosStore } from './store/toDos.store';
+import { Component, OnInit } from '@angular/core';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon'
 import { MatInput, MatSuffix } from '@angular/material/input'
@@ -7,12 +6,11 @@ import { MatButtonToggleGroup, MatButtonToggle, MatButtonToggleChange } from '@a
 import { MatListOption, MatSelectionList } from "@angular/material/list"
 import { MatProgressSpinner } from '@angular/material/progress-spinner'
 import { CommonModule, NgStyle } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { AppState, selectFilter, selectFilteredToDos, selectLoading } from './store/toDos.selectors';
+import { addToDo, deleteToDo, filterToDos, loadToDos, toggleToDoCompleted } from './store/toDos.action';
 import { Observable } from 'rxjs';
-import { ToDo } from '../model/toDo.model';
-import { provideStore, Store } from '@ngrx/store';
-import { toDoReducer } from './store/toDos.reducers';
-import { AppState, selectAllToDos } from './store/toDos.selectors';
-import { loadToDos } from './store/toDos.action';
+import { ToDo, ToDosFilter } from '../model/toDo.model';
 
 @Component({
   selector: 'app-to-do',
@@ -23,47 +21,32 @@ import { loadToDos } from './store/toDos.action';
   providers: []
 })
 export class ToDoComponentTwo implements OnInit{
-  toDos$ = this.store.select(selectAllToDos)// @shea - need selector here
+  toDos$: Observable<ToDo[]> = this.store.select(selectFilteredToDos)
+  filter$: Observable<ToDosFilter> = this.store.select(selectFilter)
+  loading$: Observable<boolean> = this.store.select(selectLoading)
 
-
-  // store = inject(ToDosStore)
-  // filter = viewChild.required(MatButtonToggleGroup)
-
-  constructor(private store: Store<AppState>) {
-    // effect(() => {
-    //   const filter = this.filter();
-
-    //   filter.value = this.store.filter()
-    // })
-  }
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
     this.store.dispatch(loadToDos())
-    // this.loadToDos().then(() => {
-    //   console.log("to do's loaded")
-    // })
   }
 
-  async loadToDos(): Promise<void> {
-    // return await this.store.loadAll()
+  OnAddToDo(title: string): void {
+    this.store.dispatch(addToDo({title}))
   }
 
-  async OnAddToDo(title: string): Promise<void> {
-    // await this.store.addToDO(title)
+  onDeleteToDo(id: string, event: MouseEvent): void {
+    event.stopPropagation()
+    this.store.dispatch(deleteToDo({id}))
   }
 
-  async onDeleteToDo(id: string, event: MouseEvent): Promise<void> {
-    // event.stopPropagation()
-    // await this.store.deleteToDo(id)
-  }
-
-  async OnToDoToggled(id: string, completed: boolean): Promise<void> {
-    // await this.store.updateToDo(id, !completed)
+  OnToDoToggled(id: string, completed: boolean): void {
+    this.store.dispatch(toggleToDoCompleted({ id, completed }))
   }
 
   onFilterToDos(event: MatButtonToggleChange) {
-    // const filter: ToDosFilter = event.value
+    const filter: ToDosFilter = event.value
 
-    // this.store.updateFilter(filter)
+    this.store.dispatch(filterToDos({filter}))
   }
 }
