@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, viewChild, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, viewChild } from '@angular/core';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon'
 import { MatInput, MatSuffix } from '@angular/material/input'
