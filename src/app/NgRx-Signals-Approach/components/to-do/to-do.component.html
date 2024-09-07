@@ -12,20 +12,22 @@
     <mat-button-toggle value="completed">Completed</mat-button-toggle>
 </mat-button-toggle-group>
 
-<mat-selection-list class="todos-list">
-
-    @if (!store.loading()) {
-        @for(todo of store.filteredToDos(); track todo.id; let index = $index) {
-            <mat-list-option [selected]="todo.completed" (click)="OnToDoToggled(todo.id, todo.completed)">
-                <div class="todo-item">
-                    <mat-icon fontIcon="delete" class="delete-todo" (click)="onDeleteToDo(todo.id, $event)"></mat-icon>
-                    <span [ngStyle]="{'text-decoration': todo.completed ? 'line-through' : 'none'}">{{ todo.title }}</span>
-                </div>
-            </mat-list-option>
+<div class="todos-list-container">
+    <mat-selection-list class="todos-list">
+    
+        @if (!store.loading()) {
+            @for(todo of store.filteredToDos(); track todo.id; let index = $index) {
+                <mat-list-option [selected]="todo.completed" (click)="OnToDoToggled(todo.id, todo.completed)">
+                    <div class="todo-item">
+                        <mat-icon fontIcon="delete" class="delete-todo" (click)="onDeleteToDo(todo.id, $event)"></mat-icon>
+                        <span [ngStyle]="{'text-decoration': todo.completed ? 'line-through' : 'none'}">{{ todo.title }}</span>
+                    </div>
+                </mat-list-option>
+            }
         }
-    }
-    @else {
-        <mat-spinner></mat-spinner>
-    }
-
-</mat-selection-list>
+        @else {
+            <mat-spinner></mat-spinner>
+        }
+    
+    </mat-selection-list>
+</div>
