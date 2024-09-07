@@ -14,7 +14,7 @@
 
 <div class="todos-list-container">
     <mat-selection-list class="todos-list">
-    
+
         @if (!(loading$ | async) && !flutterLoad; as toDos) {
             @for(todo of toDos$ | async; track todo.id; let index = $index) {
                 <mat-list-option [selected]="todo.completed" (click)="OnToDoToggled(todo.id, todo.completed)">
@@ -28,6 +28,6 @@
         @else {
             <mat-spinner></mat-spinner>
         }
-    
+
     </mat-selection-list>
 </div>
